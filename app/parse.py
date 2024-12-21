@@ -1,5 +1,4 @@
 import csv
-from typing import List
 from urllib.parse import urljoin
 
 import requests
@@ -28,7 +27,7 @@ def parse_single_quote(quote_element: Tag) -> [Quote]:
     )
 
 
-def get_next_page(page_soup:  BeautifulSoup) -> str | None:
+def get_next_page(page_soup: BeautifulSoup) -> str | None:
     next_url = page_soup.select_one(".pager .next a")
     if next_url:
         return next_url["href"]
@@ -59,7 +58,7 @@ def get_page_quotes(url: str = HOME_PAGE) -> [Quote]:
 
 
 def write_quotes_to_csv(quotes: [Quote], filename: str) -> None:
-    with open(filename, "w", encoding="utf-8", newline='') as f:
+    with open(filename, "w", encoding="utf-8", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(QUOTE_FIELDS)
         for quote in quotes:
