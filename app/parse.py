@@ -1,4 +1,5 @@
 import csv
+from typing import List
 from urllib.parse import urljoin
 
 import requests
@@ -19,7 +20,7 @@ QUOTE_FIELDS = ["text", "author", "tags"]
 HOME_PAGE = "https://quotes.toscrape.com/"
 
 
-def parse_single_quote(quote_element: Tag) -> [Quote]:
+def parse_single_quote(quote_element: Tag) -> Quote:
     return Quote(
         text=quote_element.select_one(".text").text,
         author=quote_element.select_one(".author").text,
@@ -35,7 +36,7 @@ def get_next_page(page_soup: BeautifulSoup) -> str | None:
     return None
 
 
-def get_page_quotes(url: str = HOME_PAGE) -> [Quote]:
+def get_page_quotes(url: str = HOME_PAGE) -> List[Quote]:
     text = requests.get(url)
 
     page_soup = BeautifulSoup(text.text, "html.parser")
@@ -57,7 +58,7 @@ def get_page_quotes(url: str = HOME_PAGE) -> [Quote]:
     return quotes
 
 
-def write_quotes_to_csv(quotes: [Quote], filename: str) -> None:
+def write_quotes_to_csv(quotes: List[Quote], filename: str) -> None:
     with open(filename, "w", encoding="utf-8", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(QUOTE_FIELDS)
